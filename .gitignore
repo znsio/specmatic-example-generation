@@ -1,0 +1,5 @@
+**/build
+**/.specmatic
+*.log
+.idea
+DS_Store

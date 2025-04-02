@@ -1,0 +1,18 @@
+sources:
+  - provider: filesystem
+    provides:
+      - openapi.yaml   
+test:
+  resiliencyTests:
+    enable: none
+report:
+  formatters:
+    - type: text
+      layout: table
+  types:
+    APICoverage:
+      OpenAPI:
+        successCriteria:
+          minThresholdPercentage: 70
+          maxMissedEndpointsInSpec: 0
+          enforce: false

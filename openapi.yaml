@@ -1,0 +1,658 @@
+openapi: 3.0.1
+info:
+  title: Issued Device Administration POS Service API
+  description: Service API to perform administrative duties for pos
+  version: v1.0
+  x-specmatic-api-platform-domain: Retail Sales POS-Service APIs
+paths:
+  /pos:
+    post:
+      tags:
+        - POS
+      summary: Creates a pos
+      description: Creates a pos
+      operationId: CreatePOS
+      parameters:
+        - name: x-sync
+          in: header
+          description: Sync
+          schema:
+            type: boolean
+        - name: x-request-id
+          in: header
+          description: Correlation Id
+          schema:
+            type: string
+        - name: x-idempotency-id
+          in: header
+          description: The idempotency identifier to avoid duplicate request
+          schema:
+            maxLength: 40
+            type: string
+        - name: x-user-id
+          in: header
+          description: User Id
+          schema:
+            type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePOSRequest'
+        required: true
+      responses:
+        '202':
+          description: Accepted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '500':
+          description: Internal Server Error
+  /pos/{deviceId}/replace:
+    post:
+      tags:
+        - POS
+      summary: Replaces an existing pos
+      description: Replaces pos
+      operationId: ReplacePOS
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-request-id
+          in: header
+          description: Correlation Id
+          schema:
+            type: string
+        - name: x-idempotency-id
+          in: header
+          description: The idempotency identifier to avoid duplicate request
+          schema:
+            maxLength: 40
+            type: string
+        - name: x-user-id
+          in: header
+          description: User Id
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/POSReplaceRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+        '206':
+          description: Partial Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '500':
+          description: Internal Server Error
+  /pos/{deviceId}/activate:
+    put:
+      tags:
+        - POS
+      summary: Allows activation of a pos
+      description: Activates pos
+      operationId: ActivatePOS
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-request-id
+          in: header
+          description: Correlation Id
+          schema:
+            type: string
+        - name: x-idempotency-id
+          in: header
+          description: The idempotency identifier to avoid duplicate request
+          schema:
+            maxLength: 40
+            type: string
+        - name: x-user-id
+          in: header
+          description: User Id
+          schema:
+            type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/POSActivateRequest'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '500':
+          description: Internal Server Error
+  /pos/{deviceId}/renew:
+    post:
+      tags:
+        - POS
+      summary: Renews an existing pos
+      description: Renews pos
+      operationId: POSRenew
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-request-id
+          in: header
+          description: Correlation Id
+          schema:
+            type: string
+        - name: x-idempotency-id
+          in: header
+          description: The idempotency identifier to avoid duplicate request
+          schema:
+            maxLength: 40
+            type: string
+        - name: x-user-id
+          in: header
+          description: User Id
+          schema:
+            type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/POSRenewRequest'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '206':
+          description: Partial Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '500':
+          description: Internal Server Error
+components:
+  schemas:
+    Address:
+      required:
+        - city
+        - countryCode
+        - line1
+        - type
+      type: object
+      properties:
+        line1:
+          minLength: 1
+          type: string
+          description: The 1st line of the address
+        line2:
+          type: string
+          description: The 2nd line of the address
+          nullable: true
+        line3:
+          type: string
+          description: The 3rd line of the address
+          nullable: true
+        city:
+          minLength: 3
+          type: string
+          description: The city in the address
+        state:
+          type: string
+          description: The state in the address
+          nullable: true
+        postalCode:
+          type: string
+          description: The postal code in the address
+          nullable: true
+        countryCode:
+          minLength: 2
+          type: string
+          description: The country code in the address
+        dpId:
+          type: string
+          description: The delivery point identifier in the address
+          nullable: true
+        type:
+          minLength: 1
+          type: string
+          description: The type of the address
+        rsecId:
+          type: string
+          description: Available in GPS
+          nullable: true
+        ldmId:
+          type: string
+          description: The LDMID from LDM API
+          nullable: true
+      description: The address associated with the pos
+    POSAccount:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: Account Id
+          nullable: true
+        accountNumber:
+          type: string
+          description: Account Number
+          nullable: true
+        legacyAccountType:
+          type: string
+          description: Legacy Account Type
+          nullable: true
+        accountType:
+          type: string
+          description: Account Type
+          nullable: true
+      description: POS Account
+    POSActivateRequest:
+      type: object
+      properties:
+        posHolderPartyId:
+          type: string
+          description: POSHolder party ID
+          nullable: true
+      description: Request payload for pos activation
+    POSClosureRequest:
+      type: object
+      properties:
+        posHolderPartyId:
+          type: string
+          description: POSHolder party ID
+          nullable: true
+      description: Request payload for pos closure
+    POS:
+      type: object
+      properties:
+        posId:
+          type: string
+          description: POS Id
+          nullable: true
+        posNumber:
+          type: string
+          description: POS Number
+          nullable: true
+        posSequenceNumber:
+          type: string
+          description: POS Sequence Number
+          nullable: true
+      description: POS
+    POSHolder:
+      required:
+        - dateOfBirth
+        - familyName
+        - givenName
+        - partyId
+        - roleCode
+      type: object
+      properties:
+        partyId:
+          minLength: 1
+          type: string
+          description: The party identifier of the pos holder
+        givenName:
+          minLength: 1
+          type: string
+          description: The given name of the pos holder
+        middleName:
+          type: string
+          description: The middle name of the pos holder
+          nullable: true
+        familyName:
+          minLength: 1
+          type: string
+          description: The family name of the pos holder
+        namePrefix:
+          type: string
+          description: The name prefix of the pos holder
+          nullable: true
+        nameSuffix:
+          type: string
+          description: The name suffix of the pos holder
+        roleCode:
+          minLength: 1
+          type: string
+          description: The role code of the pos holder
+        dateOfBirth:
+          minLength: 1
+          type: string
+          description: The date of birth of the pos holder
+      description: The pos holder associated with the pos
+    POSMaintainRequest:
+      type: object
+      properties:
+        pos:
+          $ref: '#/components/schemas/POS'
+        account:
+          $ref: '#/components/schemas/POSAccount'
+        actionType:
+          type: string
+          description: Account Type
+          nullable: true
+        isLinkedAsPrimary:
+          type: boolean
+          description: Linked as Primary value
+          nullable: true
+        linkType:
+          type: string
+          description: Link Type
+          nullable: true
+      description: POS Account to Maintain request
+    POSPinRequest:
+      required:
+        - partyId
+      type: object
+      properties:
+        pin:
+          $ref: '#/components/schemas/Pin'
+        deliveryInstruction:
+          type: string
+          description: The delivery instruction for the pos pin
+          nullable: true
+        partyId:
+          minLength: 1
+          type: string
+          description: The party Id
+      description: The request payload for setting pos pin
+    POSRenewRequest:
+      required:
+        - issueAndroid
+        - waiveFee
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+        issueAndroid:
+          type: boolean
+          description: Issue Android
+        waiveFee:
+          type: boolean
+          description: Waive Fee
+        posHolderPartyId:
+          type: string
+          description: POSHolder party ID
+          nullable: true
+      description: Request payload for pos renew
+    POSReplaceRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: Reason for pos replacement
+          nullable: true
+        lostStolenDate:
+          type: string
+          description: LostStolen date of pos
+          nullable: true
+        issueAndroid:
+          type: boolean
+          description: Issue Android
+          nullable: true
+        waiveFee:
+          type: boolean
+          description: Waive Fee
+          nullable: true
+        posHolderPartyId:
+          type: string
+          description: POSHolder party ID
+          nullable: true
+        address:
+          $ref: '#/components/schemas/Address'
+      description: Request payload for pos replacement
+    POSStatusRequest:
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/Status'
+        posHolderPartyId:
+          type: string
+          description: POSHolder party ID
+          nullable: true
+      description: The request payload for updating the status
+    CreatePOSRequest:
+      required:
+        - address
+        - applicationName
+        - posHolders
+      type: object
+      properties:
+        posProductId:
+          type: string
+          description: The pos product identifier
+        posProductUuid:
+          type: string
+          description: The pos product UUID
+          nullable: true
+        salesProductId:
+          type: string
+          description: The sales product identifier
+          nullable: true
+        pricingOption:
+          type: string
+          description: The pricing option
+          nullable: true
+        posRequested:
+          type: integer
+          description: The number of pos requested
+          format: int32
+          nullable: true
+        embossedName:
+          maxLength: 26
+          pattern: ^[A-Za-z0-9- ]+$
+          type: string
+          description: The name that will be embossed on the pos
+          nullable: true
+        sequenceNumber:
+          type: integer
+          description: The sequence number
+          nullable: true
+        applicationName:
+          minLength: 1
+          type: string
+          description: The application name
+        branchNumber:
+          type: integer
+          description: The branch number
+          nullable: true
+        posHolders:
+          type: array
+          items:
+            $ref: '#/components/schemas/POSHolder'
+          description: A list of pos holders
+        address:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+          description: A list of addresses
+        linkedAgreements:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkedAgreement'
+          description: A list of linked agreements
+          nullable: true
+      description: The request payload for creating a pos
+    LinkedAgreement:
+      type: object
+      properties:
+        linkType:
+          type: string
+          description: The link type of the account-pos relationship
+          nullable: true
+        accountId:
+          type: string
+          description: The identifier of the linked account
+          nullable: true
+        accountType:
+          type: string
+          description: The type of the linked account
+          nullable: true
+        accountBsb:
+          type: string
+          description: The BSB (bank-state-branch) of the linked account
+          nullable: true
+        accountNumber:
+          type: string
+          description: The number of the linked account
+          nullable: true
+      description: The linked agreement/account associated to the pos
+    Pin:
+      type: object
+      properties:
+        encrypted:
+          type: string
+          description: The encrypted pin
+          nullable: true
+        posPVN:
+          type: string
+          description: The pos PVN number
+          nullable: true
+        hostPVN:
+          type: string
+          description: The host PVN number
+          nullable: true
+        internationalPVN:
+          type: string
+          description: The internation PVN number
+          nullable: true
+        visaPVV:
+          type: string
+          description: The visa PVV number
+          nullable: true
+      description: The pin details of the pos
+    BadRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+    Status:
+      required:
+        - next
+      type: object
+      properties:
+        next:
+          minLength: 1
+          type: string
+          description: The new status for the pos
+        reasonOfChange:
+          type: string
+          description: The reason of change
+          nullable: true
+        reasonCode:
+          type: string
+          description: The reason code for status change
+          nullable: true
+      description: The pos status details for the update
+    TemporaryBlockPOSRequest:
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/TemporaryBlockStatus'
+      description: The request payload for temporarily block the pos
+    TemporaryBlockStatus:
+      required:
+        - reason
+      type: object
+      properties:
+        reason:
+          minLength: 1
+          type: string
+          description: The reason of block
+      description: The pos status details for the temporary block
