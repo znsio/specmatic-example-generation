@@ -1,0 +1,41 @@
+HEADERS.deviceId: PDX-1234
+HEADERS.x-request-id: '1234567890'
+HEADERS.x-idempotency-id: POS-1234
+HEADERS.x-user-id: 321e4567-e89b-12d3-a456-426614174003
+CreatePOSRequest.posProductId: RazorPay
+CreatePOSRequest.salesProductId: CreditCard
+CreatePOSRequest.posProductUuid: 8e4b8f4d-2d2d-4b2d9-b5d2b926b137eae
+CreatePOSRequest.pricingOption: PostPaid
+CreatePOSRequest.posRequested: 10
+CreatePOSRequest.embossedName: Specmatic
+CreatePOSRequest.sequenceNumber: 123
+CreatePOSRequest.applicationName: RetailPOSApp
+CreatePOSRequest.branchNumber: 3445
+POSHolder.partyId: GroMerX22
+POSHolder.givenName: Naresh
+POSHolder.middleName: Special
+POSHolder.familyName: Jain
+POSHolder.namePrefix: Mr.
+POSHolder.roleCode: Manager
+POSHolder.dateOfBirth: '1990-06-15'
+Address.line1: 123 Main Street
+Address.line2: Suite 100
+Address.line3: Jogeshwari East
+Address.city: Mumbai
+Address.state: MH
+Address.postalCode: '400063'
+Address.countryCode: IN
+Address.type: Billing
+BadRequest.type: https://api.specmatic.io/errors/invalid-request
+BadRequest.title: Invalid Request Payload
+BadRequest.detail: The field 'applicationName' is required and cannot be empty.
+BadRequest.instance: "/pos"
+POSReplaceRequest.reason: Device malfunction - hardware failure
+POSReplaceRequest.lostStolenDate: '2025-03-28'
+POSReplaceRequest.issueAndroid: true
+POSReplaceRequest.waiveFee: false
+POSReplaceRequest.posHolderPartyId: holder002
+POSActivateRequest.posHolderPartyId: holder003
+POSRenewRequest.issueAndroid: true
+POSRenewRequest.waiveFee: false
+POSRenewRequest.posHolderPartyId: holder004
